@@ -24,8 +24,63 @@ return A;
 }
 
 int moveAnt (Board *B, Ant *A) {
+	
+	// zmień kolor aktualnego pola na odwrotne
+	if (A->color == 0)
+                B->array[A->x][A->y] = 1;
+        else
+                B->array[A->x][A->y] = 0;
 
+	//odpowiednio przesuń mrówkę
+	switch (A->direction) {
+        case 'n':
+                if (A->color == 0) {
+                        A->direction = 'e';
+			A->y += 1;
+		}
+                else { 
+                	A->direction = 'w';
+			A->y -= 1;        
+		}
+            break;
+        case 'e':
+		 if (A->color == 0) {
+                        A->direction = 's';
+                        A->x += 1;
+                }
+                else {
+                        A->direction = 'n';
+                        A->x -= 1;
+                }
+	    break;
+        case 's':
+		if (A->color == 0) {
+                        A->direction = 'w';
+                        A->y -= 1;
+                }
+                else {
+                        A->direction = 'e';
+                        A->y += 1;
+                }
+	    break;
+        case 'w':
+		if (A->color == 0) {
+                        A->direction = 'n';
+                        A->x -= 1;
+                }
+                else {
+                        A->direction = 's';
+                        A->x += 1;
+                }
+	    break;
+        }
 
+	//nadpisz aktualny kolor pola na którym znajduje się mrówka
+	A->color = B->array[A->x][A->y];
+
+	//oznacz pole na którym znajduje się mrówka jako '2'
+	B->array[A->x][A->y] = 2;
+	
 return 0;
 }
 
