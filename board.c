@@ -1,5 +1,3 @@
-#include "board.h"
-
 // LINE_VERTICAL:│
 // LINE_HORIZONTAL:─
 // LINE_DOWN_RIGHT:┌
@@ -8,6 +6,8 @@
 // LINE_UP_LEFT:┘
 // SQUARE_WHITE: 
 // SQUARE_BLACK:█
+
+#include "declarations.h"
 
 Board initBoard (int rows, int cols) {
 	Board B;
@@ -33,25 +33,28 @@ int printBoard (Board * B, Ant *A, FILE * out) {
 	}
 
 	fprintf(out, "┌");
-	for (int i = 0; i < 2*B->rows; i++)	
+	for (int i = 0; i < B->cols; i++)	
 		 fprintf(out, "─");
 	fprintf(out, "┐\n");
 
 	for (int i = 0; i < B->rows; i++) {
 		fprintf(out, "│");
-                for (int j = 0; j < B->cols; j++) {
+                
+		for (int j = 0; j < B->cols; j++) {
 			if ( B->array[i][j] == 0) 
-                        	fprintf(out, "", B->array[i][j]);
+                        	fprintf(out, " ");
 			else
 				if ( B->array[i][j] == 1)
-                                	fprintf(out, "", B->array[i][j]);	
+                                	fprintf(out, "█");	
 			     	else
 					printAnt(A, out);
+		} 
+		
 		fprintf(out, "│\n");
 	}	
 
 	fprintf(out, "└");
-        for (int i = 0; i < 2*B->rows; i++)
+        for (int i = 0; i < B->cols; i++)
                  fprintf(out, "─");
         fprintf(out, "┘\n");
 	

@@ -7,7 +7,7 @@
 // ARROW_WEST_WHITE:◁
 // ARROW_WEST_BLACK:◀
 
-#include "ant.h" 
+#include "declarations.h" 
 
 Ant initAnt (Board *B, int x, int y, char direction, char team) {
 	Ant A;
@@ -17,6 +17,8 @@ Ant initAnt (Board *B, int x, int y, char direction, char team) {
 	A.color = B->array[x][y];
 	A.direction = direction;
 	A.team = team;
+
+	B->array[x][y] = 2; //2 zaznaczamy miejsce mrówki na planszy
 
 return A;
 }
