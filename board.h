@@ -26,7 +26,7 @@ typedef struct {
 
 Ant initAnt (Board *B, int x, int y, char direction, char team, int alive);
 
-int moveAnt (Board *B, Ant *A);
+int moveAnt (Board *B, int i);
 
 void printAnt (Board *B, int x, int y, FILE *out);
 

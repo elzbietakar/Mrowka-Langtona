@@ -17,8 +17,12 @@ int main (int argc, char **argv) {
      	} 
 
 	Board BOARD = readFromFile(in);
-
-	printBoard(&BOARD, stdout);
+	
+	for (int i = 0; i < 6; i++) {
+		printBoard(&BOARD, stdout);
+		for (int j = 0; j < BOARD.num_of_ants; j++) 
+			moveAnt(&BOARD, j);
+	}
 
 	if (out != NULL)
 		writeToFile(out, &BOARD);

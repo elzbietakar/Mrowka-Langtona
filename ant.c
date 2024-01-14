@@ -24,8 +24,14 @@ Ant initAnt (Board *B, int x, int y, char direction, char team, int alive) {
 return A;
 }
 
-int moveAnt (Board *B, Ant *A) {
+int moveAnt (Board *B, int j) {
 	
+	Ant *A = B->ants;
+	for (int i = 0; i < j; i++)
+		A++;
+
+	printf("%i %i %i %c %c %i\n", A->x, A->y, A->color, A->direction, A->team, A->alive);
+
 	// zmień kolor aktualnego pola na odwrotne
 	if (A->color == 0)
                 B->array[A->x][A->y] = 1;
@@ -89,7 +95,7 @@ return 0;
 void printAnt (Board *B, int x, int y, FILE *out) {
 
 	Ant * ant = B->ants;
-	while (ant->x != x && ant->y != y)
+	while (!(ant->x == x && ant->y == y))
 		ant++;
 
 	//na danym polu jest tylko jedna mrówka
