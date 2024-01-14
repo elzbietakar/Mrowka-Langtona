@@ -7,7 +7,7 @@
 // SQUARE_WHITE: 
 // SQUARE_BLACK:█
 
-#include "declarations.h"
+#include "board.h"
 
 Board initBoard (int rows, int cols) {
 	Board B;
@@ -22,10 +22,13 @@ Board initBoard (int rows, int cols) {
 		for (int j = 0; j < cols; j++) 
 			B.array[i][j] = 0;
 
+	B.ants = NULL;
+	B.num_of_ants = 0;
+
 return B;
 }
 
-int printBoard (Board * B, Ant *A, FILE * out) {
+int printBoard (Board * B, FILE * out) {
 	
 	if (B->array == NULL) {
 		fprintf (stderr, "Tablica nie istnieje\n");
@@ -47,7 +50,7 @@ int printBoard (Board * B, Ant *A, FILE * out) {
 				if ( B->array[i][j] == 1)
                                 	fprintf(out, "█");	
 			     	else
-					printAnt(A, out);
+					printAnt(B, i, j, out);
 		} 
 		
 		fprintf(out, "│\n");

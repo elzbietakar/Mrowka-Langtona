@@ -7,9 +7,9 @@
 // ARROW_WEST_WHITE:◁
 // ARROW_WEST_BLACK:◀
 
-#include "declarations.h" 
+#include "board.h" 
 
-Ant initAnt (Board *B, int x, int y, char direction, char team) {
+Ant initAnt (Board *B, int x, int y, char direction, char team, int alive) {
 	Ant A;
 
 	A.x = x;
@@ -17,6 +17,7 @@ Ant initAnt (Board *B, int x, int y, char direction, char team) {
 	A.color = B->array[x][y];
 	A.direction = direction;
 	A.team = team;
+	A.alive = alive;
 
 	B->array[x][y] = 2; //2 zaznaczamy miejsce mrówki na planszy
 
@@ -84,35 +85,44 @@ int moveAnt (Board *B, Ant *A) {
 return 0;
 }
 
-void printAnt (Ant * A, FILE *out) {
-	switch (A->direction) {
-        case 'n':
-		if (A->color == 0)
-            		fprintf(out, "△");
-		else 
-			fprintf(out, "▲");
-            break;
 
-        case 'e':
-		if (A->color == 0)
-                        fprintf(out, "▷");
+void printAnt (Board *B, int x, int y, FILE *out) {
+
+	Ant * ant = B->ants;
+	while (ant->x != x && ant->y != y)
+		ant++;
+
+	//na danym polu jest tylko jedna mrówka
+	if (B->array[x][y] == 2) {
+
+		switch (ant->direction) {	
+        	case 'n':
+			if (ant->color == 0)
+            			fprintf(out, "△");
+			else 
+				fprintf(out, "▲");
+            	break;
+        	case 'e':
+			if (ant->color == 0)
+                        	fprintf(out, "▷");
+                	else
+                        	fprintf(out, "▶");
+            	break;
+        	case 's':
+            		if (ant->color == 0)
+                	        fprintf(out, "▽");
                 else
-                        fprintf(out, "▶");
-            break;
-
-        case 's':
-            	if (A->color == 0)
-                        fprintf(out, "▽");
-                else
-                        fprintf(out, "▼");
-            break;
-
-        case 'w':
-            	if (A->color == 0)
-                        fprintf(out, "◁");
-                else
-                        fprintf(out, "◀");
-            break;
-
-    	}
+                        	fprintf(out, "▼");
+            	break;
+        	case 'w':
+            		if (ant->color == 0)
+                        	fprintf(out, "◁");
+                	else
+                        	fprintf(out, "◀");
+           	 break;
+    		}
+	// na danym polu jest naraz kilka mrowek tego samego koloru
+	} else {
+		fprintf(out, "x");	
+	}
 }

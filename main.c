@@ -1,17 +1,27 @@
-#include "declarations.h"
-
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#include "board.h"
+#include "read_write.h"
 
 
-int main () {
+int main (int argc, char **argv) {
 
-	Board BOARD = initBoard (5, 11); //ilosc wierszy, ilosc kolumn
-	Ant ANT = initAnt (&BOARD, 2, 5, 'n', 'r'); //x, y, kierunek [n, e, s, w], druzyna [r, p, s]
-	
-	for (int i = 0; i < 20; i++) {
-		moveAnt (&BOARD, &ANT);
-		printBoard(&BOARD, &ANT, stdout);
-	}
+	FILE *in= argc > 1 ? fopen( argv[1], "r" ) : NULL;
+	FILE *out = argc > 2 ? fopen( argv[2], "w" ) : NULL;
+
+	if (in == NULL) {
+  		fprintf(stderr, "BŁąd: nie mogę wczytać planszy\n");
+  	    	return -1;
+     	} 
+
+	Board BOARD = readFromFile(in);
+
+	printBoard(&BOARD, stdout);
+
+	if (out != NULL)
+		writeToFile(out, &BOARD);
 
 return 0;
 }
