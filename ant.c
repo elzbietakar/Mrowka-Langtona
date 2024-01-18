@@ -1,4 +1,5 @@
 #include "board.h" 
+#include <time.h>
 
 
 void moveAnt2 (Board *B,int numer) {
@@ -225,12 +226,14 @@ void printAnt (Board *B, int i, int j, FILE *out) {
 
 	//na danym polu jest tylko jedna mrówka
 	if (B->array[i][j].ant >= 1) {
-        if (B->array[i][j].team==0)
-            printf("\033[31m");
-        if (B->array[i][j].team==1)
-            printf("\033[32m");
-        if (B->array[i][j].team==2)
-            printf("\033[33m");
+        if (out==stdout){
+            if (B->array[i][j].team==0)
+                printf("\033[31m");
+            if (B->array[i][j].team==1)
+                printf("\033[32m");
+            if (B->array[i][j].team==2)
+                printf("\033[33m");
+        }
 
 		if(B->array[i][j].direction==0) {
             if(B->array[i][j].ant == 1){
@@ -290,17 +293,18 @@ void printAnt (Board *B, int i, int j, FILE *out) {
                         	fprintf(out, "◀◀");               
             }
     	}
-        printf("\033[m");
+        if (out==stdout)
+            printf("\033[m");
 	// na danym polu jest naraz kilka mrowek tego samego koloru
 	} 
     
 }
 Ant AntWar(Ant A1, Ant A2){
-    if (A1.ant>>A2.ant){
+    if (A1.ant>A2.ant){
         A1.color=A1.color;
         return A1;
     }
-    if (A1.ant<<A2.ant){
+    if (A1.ant<A2.ant){
         A2.color = A1.color;
         return A2;
     }
@@ -349,4 +353,18 @@ Ant moveAnt(Ant A1, Ant A2){
     A3.direction = A2.direction;
     A3.team = A2.team;
     return A3;
+}
+
+void MakeRandomAnt(Board *B,int i){
+    B->antsx=malloc(B->num_of_ants * sizeof(int));
+    B->antsy=malloc(B->num_of_ants * sizeof(int));
+    for(int i=0; i<B->num_of_ants;i++){
+        int x=rand() % B->rows;
+        int y=rand() % B->cols;
+        B->array[x][y].ant=1;
+        B->array[x][y].direction=rand() % 4;
+        B->array[x][y].team=rand() % 3;
+        B->antsx[i]=x;
+        B->antsy[i]=y; 
+    }  
 }

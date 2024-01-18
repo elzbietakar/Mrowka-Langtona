@@ -66,3 +66,19 @@ int printBoard (Board * B, FILE * out) {
 
 return 0;
 } 
+
+void MakeBlackSpots(Board *B,int i){
+    int j=0;
+    int a=0;
+    int suma_komorek=B->rows*B->cols;
+    while(a==0){
+        if((double)j/suma_komorek>(double)i/100)
+            a=1;
+        int x=rand() % B->rows;
+        int y=rand() % B->cols;
+        if(B->array[x][y].color==0){
+            B->array[x][y].color=1;
+            j++;
+        }
+    } 
+}

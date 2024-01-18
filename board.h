@@ -15,7 +15,7 @@ typedef struct {
         Ant ** array;
         int rows;
         int cols;
-	    int num_of_ants;
+	int num_of_ants;
         int * antsx;
         int * antsy;
 
@@ -37,5 +37,8 @@ Ant AntWar(Ant A1, Ant A2);
 void reset(Ant *A);
 
 Ant moveAnt(Ant A1, Ant A2);
+
+void MakeRandomAnt(Board *B,int i);
+void MakeBlackSpots(Board *B,int i);
 
 #endif
