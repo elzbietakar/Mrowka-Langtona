@@ -37,7 +37,7 @@ int printBoard (Board * B, FILE * out) {
 
 	fprintf(out, "┌");
 	for (int i = 0; i < B->cols; i++)	
-		 fprintf(out, "─");
+		 fprintf(out, "──");
 	fprintf(out, "┐\n");
 
 	for (int i = 0; i < B->rows; i++) {
@@ -46,9 +46,9 @@ int printBoard (Board * B, FILE * out) {
 		for (int j = 0; j < B->cols; j++) {
 			if ( B->array[i][j].ant == 0) {
                 if(B->array[i][j].color == 0)
-                    fprintf(out, " ");
+                    fprintf(out, "  ");
                 if(B->array[i][j].color == 1)
-                    fprintf(out, "█");
+                    fprintf(out, "██");
             }
             if (B->array[i][j].ant >= 1){
                 printAnt(B,i,j,out);
@@ -60,7 +60,7 @@ int printBoard (Board * B, FILE * out) {
 
 	fprintf(out, "└");
         for (int i = 0; i < B->cols; i++)
-                 fprintf(out, "─");
+                 fprintf(out, "──");
         fprintf(out, "┘\n");
 	
 

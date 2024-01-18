@@ -233,29 +233,62 @@ void printAnt (Board *B, int i, int j, FILE *out) {
             printf("\033[33m");
 
 		if(B->array[i][j].direction==0) {
-			if (B->array[i][j].color == 0)
-            			    fprintf(out, "△");
-			else 
-				            fprintf(out, "▲");
+            if(B->array[i][j].ant == 1){
+			        if (B->array[i][j].color == 0)
+            			    fprintf(out, " △");
+			        else 
+				            fprintf(out, " ▲");
+            }
+            else{
+ 			        if (B->array[i][j].color == 0)
+            			    fprintf(out, "△△");
+			        else 
+				            fprintf(out, "▲▲");               
+            }
         }
 
 		if(B->array[i][j].direction==1) {
+            if(B->array[i][j].ant == 1){
             		if (B->array[i][j].color == 0)
-                	        fprintf(out, "▽");
-                else
-                        	fprintf(out, "▼");
+                	        fprintf(out, " ▽");
+                    else
+                        	fprintf(out, " ▼");
+            }
+            else{
+            		if (B->array[i][j].color == 0)
+                	        fprintf(out, "▽▽");
+                    else
+                        	fprintf(out, "▼▼");
+            }
         }
 		if(B->array[i][j].direction==2) {
+            if(B->array[i][j].ant == 1){
 			        if (B->array[i][j].color == 0)
-                        	fprintf(out, "▷");
+                        	fprintf(out, " ▷");
                 	else
-                        	fprintf(out, "▶");
+                        	fprintf(out, " ▶");
+            }
+            else{
+                	if (B->array[i][j].color == 0)
+                        	fprintf(out, "▷▷");
+                	else
+                        	fprintf(out, "▶▶");
+
+            }
         }
 		if(B->array[i][j].direction==3) {
+            if(B->array[i][j].ant == 1){
             		if (B->array[i][j].color == 0)
-                        	fprintf(out, "◁");
+                        	fprintf(out, " ◁");
                 	else
-                        	fprintf(out, "◀");
+                        	fprintf(out, " ◀");
+            }
+            else{
+             		if (B->array[i][j].color == 0)
+                        	fprintf(out, "◁◁");
+                	else
+                        	fprintf(out, "◀◀");               
+            }
     	}
         printf("\033[m");
 	// na danym polu jest naraz kilka mrowek tego samego koloru
