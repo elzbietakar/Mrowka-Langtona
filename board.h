@@ -5,33 +5,37 @@
 #include <stdlib.h>
 
 typedef struct {
-        int x;
-        int y;
+        int ant;
         int color;
-        char direction;
-        char team;
-	int alive;
+        int direction;
+        int team;
 } Ant;
 
 typedef struct {
-        int ** array;
-	Ant * ants;
-
+        Ant ** array;
         int rows;
         int cols;
-	int num_of_ants;
+	    int num_of_ants;
+        int * antsx;
+        int * antsy;
 
 } Board;
 
 
 Ant initAnt (Board *B, int x, int y, char direction, char team, int alive);
 
-int moveAnt (Board *B, int i);
+void moveAnt2 (Board *B,int i);
 
-void printAnt (Board *B, int x, int y, FILE *out);
+void printAnt (Board *B, int i, int j, FILE *out);
 
 int printBoard (Board *B, FILE * out);
 
-Board initBoard (int x, int y);
+Board initBoard (int rows, int cols) ;
+
+Ant AntWar(Ant A1, Ant A2);
+
+void reset(Ant *A);
+
+Ant moveAnt(Ant A1, Ant A2);
 
 #endif

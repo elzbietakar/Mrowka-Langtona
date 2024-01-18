@@ -1,31 +1,31 @@
-// LINE_VERTICAL:│
-// LINE_HORIZONTAL:─
-// LINE_DOWN_RIGHT:┌
-// LINE_DOWN_LEFT:┐
-// LINE_UP_RIGHT:└
-// LINE_UP_LEFT:┘
-// SQUARE_WHITE: 
-// SQUARE_BLACK:█
-
 #include "board.h"
+#include <stdlib.h>
 
-Board initBoard (int rows, int cols) {
-	Board B;
-	B.rows = rows;
-	B.cols = cols;
-	
-	B.array = malloc( rows * sizeof (int*));
-	for (int i = 0; i < rows; i++) 
-		B.array[i] = malloc (cols * sizeof (int));
-		
-	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++) 
-			B.array[i][j] = 0;
 
-	B.ants = NULL;
-	B.num_of_ants = 0;
+Board initBoard(int rows, int cols) {
+    
+    Board board;
+    board.array =(Ant**)malloc(rows * sizeof(Ant *));
+    for (int i = 0; i < rows; i++) {
+        board.array[i] = (Ant*)malloc(cols * sizeof(Ant));
+    }
+    
+    board.rows = rows;
+    board.cols = cols;
+    board.num_of_ants = 0;
+    board.antsx =NULL;
+    board.antsy =NULL;
 
-return B;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            
+            board.array[i][j].ant = 0;        
+            board.array[i][j].color = 0;      
+            board.array[i][j].direction = 0; 
+            board.array[i][j].team = 0;      
+        }
+    }
+    return board;
 }
 
 int printBoard (Board * B, FILE * out) {
@@ -44,13 +44,15 @@ int printBoard (Board * B, FILE * out) {
 		fprintf(out, "│");
                 
 		for (int j = 0; j < B->cols; j++) {
-			if ( B->array[i][j] == 0) 
-                        	fprintf(out, " ");
-			else
-				if ( B->array[i][j] == 1)
-                                	fprintf(out, "█");	
-			     	else
-					printAnt(B, i, j, out);
+			if ( B->array[i][j].ant == 0) {
+                if(B->array[i][j].color == 0)
+                    fprintf(out, " ");
+                if(B->array[i][j].color == 1)
+                    fprintf(out, "█");
+            }
+            if (B->array[i][j].ant >= 1){
+                printAnt(B,i,j,out);
+            }
 		} 
 		
 		fprintf(out, "│\n");

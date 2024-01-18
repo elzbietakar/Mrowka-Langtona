@@ -1,134 +1,319 @@
-// ARROW_NORTH_WHITE:△
-// ARROW_NORTH_BLACK:▲
-// ARROW_EAST_WHITE:▷
-// ARROW_EAST_BLACK:▶
-// ARROW_SOUTH_WHITE:▽
-// ARROW_SOUTH_BLACK:▼
-// ARROW_WEST_WHITE:◁
-// ARROW_WEST_BLACK:◀
-
 #include "board.h" 
 
-Ant initAnt (Board *B, int x, int y, char direction, char team, int alive) {
-	Ant A;
 
-	A.x = x;
-	A.y = y;
-	A.color = B->array[x][y];
-	A.direction = direction;
-	A.team = team;
-	A.alive = alive;
+void moveAnt2 (Board *B,int numer) {
+        int i = B->antsx[numer];
+        int j = B->antsy[numer];
 
-	B->array[x][y] = 2; //2 zaznaczamy miejsce mrówki na planszy
 
-return A;
-}
-
-int moveAnt (Board *B, int j) {
-	
-	Ant *A = B->ants;
-	for (int i = 0; i < j; i++)
-		A++;
-
-	printf("%i %i %i %c %c %i\n", A->x, A->y, A->color, A->direction, A->team, A->alive);
-
-	// zmień kolor aktualnego pola na odwrotne
-	if (A->color == 0)
-                B->array[A->x][A->y] = 1;
-        else
-                B->array[A->x][A->y] = 0;
-
-	//odpowiednio przesuń mrówkę
-	switch (A->direction) {
-        case 'n':
-                if (A->color == 0) {
-                        A->direction = 'e';
-			A->y += 1;
-		}
-                else { 
-                	A->direction = 'w';
-			A->y -= 1;        
-		}
+        if(B->array[i][j].color==0){
+            switch (B->array[i][j].direction){
+                case 0:
+                    B->array[i][j].direction=2;
+                break;
+                case 1:
+                    B->array[i][j].direction=3;
+                break;
+                case 2:
+                    B->array[i][j].direction=1;
+                break;
+                case 3:
+                    B->array[i][j].direction=0;
+                break;
+            }
+        }
+        else{
+            switch (B->array[i][j].direction){
+            case 0:
+                B->array[i][j].direction=3;
             break;
-        case 'e':
-		 if (A->color == 0) {
-                        A->direction = 's';
-                        A->x += 1;
-                }
-                else {
-                        A->direction = 'n';
-                        A->x -= 1;
-                }
-	    break;
-        case 's':
-		if (A->color == 0) {
-                        A->direction = 'w';
-                        A->y -= 1;
-                }
-                else {
-                        A->direction = 'e';
-                        A->y += 1;
-                }
-	    break;
-        case 'w':
-		if (A->color == 0) {
-                        A->direction = 'n';
-                        A->x -= 1;
-                }
-                else {
-                        A->direction = 's';
-                        A->x += 1;
-                }
-	    break;
+            case 1:
+                B->array[i][j].direction=2;
+            break;
+            case 2:
+                B->array[i][j].direction=0;
+            break;
+            case 3:
+                B->array[i][j].direction=1;
+            break;
+            }          
         }
 
-	//nadpisz aktualny kolor pola na którym znajduje się mrówka
-	A->color = B->array[A->x][A->y];
 
-	//oznacz pole na którym znajduje się mrówka jako '2'
-	B->array[A->x][A->y] = 2;
-	
-return 0;
+        if (B->array[i][j].color== 0)
+            B->array[i][j].color=1;
+        else
+            B->array[i][j].color=0;
+
+
+
+        if (B->array[i][j].direction== 0){
+            if (i==0){
+                if(B->array[B->rows-1][j].ant== 0){
+                    B->array[B->rows-1][j]=moveAnt(B->array[B->rows-1][j],B->array[i][j]);
+                    reset(&B->array[i][j]);
+                }
+                else{
+                    if(B->array[B->rows-1][j].team!=B->array[i][j].team){
+                        B->array[B->rows-1][j] = AntWar(B->array[B->rows-1][j],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                    else{
+                        B->array[B->rows-1][j]=moveAnt(B->array[B->rows-1][j],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                }
+                B->antsx[numer]=B->rows-1;
+            }
+            else{
+                if(B->array[i-1][j].ant== 0){
+                    B->array[i-1][j]=moveAnt(B->array[i-1][j],B->array[i][j]);
+                    reset(&B->array[i][j]);
+                }
+                else{
+                    if(B->array[i-1][j].team!=B->array[i][j].team){
+                        B->array[i-1][j] = AntWar(B->array[i-1][j],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                    else{
+                        B->array[i-1][j]=moveAnt(B->array[i-1][j],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                }
+                B->antsx[numer]=i-1;
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+        if (B->array[i][j].direction== 1){
+            if(i==B->rows-1){
+                if(B->array[0][j].ant== 0){
+                    B->array[0][j]=moveAnt(B->array[0][j],B->array[i][j]);
+                    reset(&B->array[i][j]);
+                }
+                else{
+                    if(B->array[0][j].team!=B->array[i][j].team){
+                        B->array[0][j] = AntWar(B->array[0][j],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                    else{
+                        B->array[0][j]=moveAnt(B->array[0][j],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                }
+                B->antsx[numer]=0;  
+            }
+            else{
+                if(B->array[i+1][j].ant== 0){
+                    B->array[i+1][j]=moveAnt(B->array[i+1][j],B->array[i][j]);
+                    reset(&B->array[i][j]);
+                }
+                else{
+                    if(B->array[i+1][j].team!=B->array[i][j].team){
+                        B->array[i+1][j] = AntWar(B->array[i+1][j],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                    else{
+                        B->array[i+1][j]=moveAnt(B->array[i+1][j],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                }
+                B->antsx[numer]=i+1;                   
+            }
+        }
+
+
+
+
+
+
+
+
+
+        if (B->array[i][j].direction== 2){
+            if(j==B->cols-1){
+                if(B->array[i][0].ant== 0){
+                    B->array[i][0]=moveAnt(B->array[i][0],B->array[i][j]);
+                    reset(&B->array[i][j]);
+                }
+                else{
+                    if(B->array[i][0].team!=B->array[i][j].team){
+                        B->array[i][0] = AntWar(B->array[i][0],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                    else{
+                        B->array[i][0]=moveAnt(B->array[i][0],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                }
+                B->antsy[numer]=0;  
+            }
+            else{
+                if(B->array[i][j+1].ant== 0){
+                    B->array[i][j+1]=moveAnt(B->array[i][j+1],B->array[i][j]);
+                    reset(&B->array[i][j]);
+                }
+                else{
+                    if(B->array[i][j+1].team!=B->array[i][j].team){
+                        B->array[i][j+1] = AntWar(B->array[i][j+1],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                    else{
+                        B->array[i][j+1]=moveAnt(B->array[i][j+1],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                }
+                B->antsy[numer]=j+1;                    
+            }
+        }
+
+
+
+
+
+
+
+        if (B->array[i][j].direction== 3){
+            if(j==0){
+                if(B->array[i][B->cols-1].ant== 0){
+                    B->array[i][B->cols-1]=moveAnt(B->array[i][B->cols-1],B->array[i][j]);
+                    reset(&B->array[i][j]);
+                }
+                else{
+                    if(B->array[i][B->cols-1].team!=B->array[i][j].team){
+                        B->array[i][B->cols-1] = AntWar(B->array[i][B->cols-1],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                    else{
+                        B->array[i][B->cols-1]=moveAnt(B->array[i][B->cols-1],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                }
+                B->antsy[numer]=B->cols-1;   
+            }
+            else{
+                if(B->array[i][j-1].ant== 0){
+                    B->array[i][j-1]=moveAnt(B->array[i][j-1],B->array[i][j]);
+                    reset(&B->array[i][j]);
+                }
+                else{
+                    if(B->array[i][j-1].team!=B->array[i][j].team){
+                        B->array[i][j-1] = AntWar(B->array[i][j-1],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                    else{
+                        B->array[i][j-1]=moveAnt(B->array[i][j-1],B->array[i][j]);
+                        reset(&B->array[i][j]);
+                    }
+                }
+                B->antsy[numer]=j-1;                    
+            }
+        }
+
 }
 
+void printAnt (Board *B, int i, int j, FILE *out) {
 
-void printAnt (Board *B, int x, int y, FILE *out) {
-
-	Ant * ant = B->ants;
-	while (!(ant->x == x && ant->y == y))
-		ant++;
 
 	//na danym polu jest tylko jedna mrówka
-	if (B->array[x][y] == 2) {
+	if (B->array[i][j].ant >= 1) {
+        if (B->array[i][j].team==0)
+            printf("\033[31m");
+        if (B->array[i][j].team==1)
+            printf("\033[32m");
+        if (B->array[i][j].team==2)
+            printf("\033[33m");
 
-		switch (ant->direction) {	
-        	case 'n':
-			if (ant->color == 0)
-            			fprintf(out, "△");
+		if(B->array[i][j].direction==0) {
+			if (B->array[i][j].color == 0)
+            			    fprintf(out, "△");
 			else 
-				fprintf(out, "▲");
-            	break;
-        	case 'e':
-			if (ant->color == 0)
-                        	fprintf(out, "▷");
-                	else
-                        	fprintf(out, "▶");
-            	break;
-        	case 's':
-            		if (ant->color == 0)
+				            fprintf(out, "▲");
+        }
+
+		if(B->array[i][j].direction==1) {
+            		if (B->array[i][j].color == 0)
                 	        fprintf(out, "▽");
                 else
                         	fprintf(out, "▼");
-            	break;
-        	case 'w':
-            		if (ant->color == 0)
+        }
+		if(B->array[i][j].direction==2) {
+			        if (B->array[i][j].color == 0)
+                        	fprintf(out, "▷");
+                	else
+                        	fprintf(out, "▶");
+        }
+		if(B->array[i][j].direction==3) {
+            		if (B->array[i][j].color == 0)
                         	fprintf(out, "◁");
                 	else
                         	fprintf(out, "◀");
-           	 break;
-    		}
+    	}
+        printf("\033[m");
 	// na danym polu jest naraz kilka mrowek tego samego koloru
-	} else {
-		fprintf(out, "x");	
-	}
+	} 
+    
+}
+Ant AntWar(Ant A1, Ant A2){
+    if (A1.ant>>A2.ant){
+        A1.color=A1.color;
+        return A1;
+    }
+    if (A1.ant<<A2.ant){
+        A2.color = A1.color;
+        return A2;
+    }
+        
+    else{
+        if(A1.team==0 && A2.team==1){
+            A1.color=A2.color;
+            return A1;
+        }
+        if(A2.team==0 && A1.team==1){
+            A2.color=A1.color;
+            return A2;
+        }
+        if(A1.team==0 && A2.team==2){
+            A2.color = A1.color;
+            return A2;
+        }
+        if(A2.team==0 && A1.team==2){
+            A1.color=A2.color;
+            return A1;
+        }  
+        if(A1.team==1 && A2.team==2){
+            A1.color = A2.color;
+            return A1;
+        }            
+        if(A2.team==1 && A1.team==2){
+            A2.color = A1.color;
+            return A2;
+        }
+            
+    }
+
+
+}
+
+void reset(Ant *A){
+    A->ant=0;
+    A->direction=0;
+    A->team=0;
+}
+
+Ant moveAnt(Ant A1, Ant A2){
+    Ant A3;
+    A3.ant = A2.ant + A1.ant;
+    A3.color = A1.color;
+    A3.direction = A2.direction;
+    A3.team = A2.team;
+    return A3;
 }
