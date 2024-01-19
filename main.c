@@ -45,15 +45,15 @@ int main (int argc, char **argv) {
 				bvalue = optarg;
 			}
 			else{ 
-				fprintf (stderr, "Opcja a i b jednoczesnie.\n");
+				fprintf (stderr, "Nie mozna wykonac opcji -a i -b jednoczesnie.\n");
 				return 1;
 			}
 			break;
 		case '?':
 			if (optopt == 'a'||optopt == 'b')
-			fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+			fprintf (stderr, "opcja -%c wymaga dodatkowego argumentu.\n", optopt);
 			else 
-			fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+			fprintf (stderr, "Nieznana opcja `-%c'.\n", optopt);
 			return 1;
 		default:
 			abort ();
