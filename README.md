@@ -34,4 +34,4 @@ Jeśli argument `name` nie zostanie podany, plansza będzie wypisywana na wyjśc
 0 0 0 0 0    
 
 1            //ilość mrówek
-2 2 1 0 0    //parametry mrówki: x, y, życie, kierunek(0-△,1-▽,2-▷,3-◁), drużyna(0-czerwona,1-niebieska,2-żółta)
+2 2 1 0 0    //parametry mrówki: x, y, życie, kierunek(0-△,1-▽,2-▷,3-◁), drużyna(0-czerwona, 1-zielona, 2-żółta)
